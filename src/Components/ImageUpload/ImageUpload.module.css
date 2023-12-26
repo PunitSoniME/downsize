@@ -1,0 +1,18 @@
+.root {
+    min-height: rem(120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-width: 2px;
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+
+    &[data-accept] {
+        border-color: var(--mantine-color-blue-6);
+        background-color: var(--mantine-color-blue-1);
+    }
+
+    &[data-reject] {
+        border-color: var(--mantine-color-red-6);
+        background-color: var(--mantine-color-red-1);
+    }
+}

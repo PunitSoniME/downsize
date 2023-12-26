@@ -1,7 +1,8 @@
 import { Options } from "browser-image-compression";
 
-type Image = {
-    show: boolean;
+type ImageType = {
+    id: string;
+    isProcessed: boolean;
     originalFile: File;
     originalFileUrl: string;
     compressedFile: File;
@@ -9,4 +10,4 @@ type Image = {
     options: Options;
 }
 
-export default Image;
+export default ImageType;

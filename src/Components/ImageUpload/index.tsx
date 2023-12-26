@@ -1,64 +1,60 @@
-import imageCompression, { Options } from 'browser-image-compression';
-import Image from '../../types/Image';
+import imageCompression from 'browser-image-compression';
+import ImageType from '../../types/ImageType';
 import { Group, Text, rem } from '@mantine/core';
 import { Dropzone, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { CiImageOn } from "react-icons/ci";
 import { MdOutlineFileUpload } from "react-icons/md";
 import { FaTimes } from "react-icons/fa";
+import { useContext } from 'react';
+import { ImagesContext } from '../../Context/ImagesContext';
+import { ConfigurationContext } from '../../Context/ConfigurationContext';
+import { generateUniqueId } from '../../utils';
+import classes from './ImageUpload.module.css';
 
-export default function ImageUpload({
-    uploadedFiles
-}) {
+export default function ImageUpload() {
+    const imagesContext = useContext(ImagesContext);
+    const configContext = useContext(ConfigurationContext);
 
-    async function handleImageUpload(files: File[]) {
+    const addImages = async (files: File[]) => {
 
-        let compressedFiles: Image[] = [];
+        const tempFiles: ImageType[] = [];
+
         for await (const file of files) {
+            const id = generateUniqueId();
 
-            console.log('originalFile instanceof Blob', file instanceof Blob); // true
-            console.log(`originalFile size ${file.size / 1024 / 1024} MB`);
-
-            const options: Options = {
-                // maxSizeMB: 1,
-                // maxWidthOrHeight: 1920,
-                useWebWorker: true,
-                initialQuality: 0.6
-            }
-            try {
-                const compressedFile = await imageCompression(file, options);
-                console.log('compressedFile instanceof Blob', compressedFile instanceof Blob); // true
-                console.log(`compressedFile size ${compressedFile.size / 1024 / 1024} MB`); // smaller than maxSizeMB
-
-                console.log('Old Size ', file.size);
-                console.log('New Size ', compressedFile.size);
-
-                compressedFiles.push({
-                    show: true,
-                    originalFile: file,
-                    originalFileUrl: await imageCompression.getDataUrlFromFile(file),
-                    compressedFile: compressedFile,
-                    compressedFileUrl: await imageCompression.getDataUrlFromFile(compressedFile),
-                    options: { ...options }
-                });
-
-            } catch (error) {
-                console.log(error);
-            }
+            tempFiles.push({
+                id: id,
+                isProcessed: false,
+                originalFile: file,
+                originalFileUrl: await imageCompression.getDataUrlFromFile(file),
+                compressedFile: null,
+                compressedFileUrl: null,
+                options: {
+                    ...configContext.config
+                }
+            });
         }
 
-        uploadedFiles(compressedFiles);
+        imagesContext.setImages(prevState => {
+            return [...prevState, ...tempFiles]
+        });
 
+        setTimeout(() => {
+            document.getElementById("scroll-to-view").scrollIntoView();
+        }, 500);
     }
+
 
     return (
         <Dropzone
             id="compress"
             onDrop={(files) => {
-                handleImageUpload(files);
+                addImages(files);
             }}
             onReject={(files) => console.log('rejected files', files)}
             maxSize={5 * 1024 ** 2}
             accept={IMAGE_MIME_TYPE}
+            className={classes.root}
         >
             <Group justify="center" gap="xl" mih={200} style={{ pointerEvents: 'none' }}>
                 <Dropzone.Accept>

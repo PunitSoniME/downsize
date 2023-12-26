@@ -1,16 +1,27 @@
-import { lazy, useState, Suspense } from 'react';
-import Image from './types/Image';
+import { lazy, Suspense, useContext, useEffect } from 'react';
+import { Container, Stack, Modal } from '@mantine/core';
+
+import { DialogContext } from './Context/DialogContext';
+import { useDisclosure } from '@mantine/hooks';
+
 import './App.css'
-import { Container, Stack } from '@mantine/core';
 
 const ImageUpload = lazy(() => import('./Components/ImageUpload'));
-const CompressedList = lazy(() => import('./Components/CompressedList'));
+const Items = lazy(() => import('./Components/Items'));
 const Features = lazy(() => import('./Components/Features'));
 const CustomHeader = lazy(() => import('./Components/CustomHeader'));
+const ConfigurationDrawer = lazy(() => import('./Components/ConfigurationDrawer'));
+const MidOptions = lazy(() => import('./Components/MidOptions'));
+const Support = lazy(() => import('./Components/Support'));
 
 function App() {
+  const dialogContext = useContext(DialogContext);
 
-  const [result, setResult] = useState<Image[]>([]);
+  const [opened, { close, open }] = useDisclosure(dialogContext.dialog.open);
+
+  useEffect(() => {
+    dialogContext.dialog.open ? open() : close();
+  }, [dialogContext.dialog.open]);
 
   return (
     <>
@@ -18,27 +29,52 @@ function App() {
         <CustomHeader />
       </Suspense>
 
-      <Container size="lg">
+      <Suspense fallback={<></>}>
+        <ConfigurationDrawer />
+      </Suspense>
 
-        <Stack gap={12} mt={32}>
+      <Container size="lg" pb={100}>
 
-          <Suspense fallback={<></>}>
-            <ImageUpload uploadedFiles={(files: Image[]) => {
-              setResult(prevState => {
-                return [...prevState, ...files];
-              });
-            }} />
-          </Suspense>
-
-          <Suspense fallback={<></>}>
-            <CompressedList files={result} />
-          </Suspense>
+        <Stack gap={20} mt={32}>
 
           <Suspense fallback={<></>}>
             <Features />
           </Suspense>
 
+          <Suspense fallback={<></>}>
+            <ImageUpload />
+          </Suspense>
+
+          <Suspense fallback={<></>}>
+            <MidOptions />
+          </Suspense>
+
+          <Suspense fallback={<></>}>
+            <Items />
+          </Suspense>
+
         </Stack>
+
+        <Modal
+          centered
+          opened={opened}
+          title="Congratulations"
+          onClose={() => {
+            dialogContext.setDialog({
+              open: false,
+              content: ''
+            });
+
+            close();
+          }}
+        >
+          {dialogContext.dialog.content}
+        </Modal>
+
+        <Suspense fallback={<></>}>
+          <Support />
+        </Suspense>
+
       </Container>
 
     </>
