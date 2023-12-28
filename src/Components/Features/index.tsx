@@ -1,4 +1,4 @@
-import { Title, SimpleGrid, Text, Button, Grid } from '@mantine/core';
+import { Title, SimpleGrid, Text, Button, Grid, Paper } from '@mantine/core';
 // import { IconReceiptOff, IconFlame, IconCircleDotted, IconFileCode } from '@tabler/icons-react';
 import classes from './Features.module.css';
 import { appName } from '../../utils';
@@ -70,14 +70,6 @@ const features = [
 export default function Features() {
     const items = features.map((feature) => (
         <div key={feature.title}>
-            {/* <ThemeIcon
-                size={44}
-                radius="md"
-                variant="gradient"
-                gradient={{ deg: 133, from: 'blue', to: 'cyan' }}
-            >
-                <feature.icon style={{ width: rem(26), height: rem(26) }} stroke={1.5} />
-            </ThemeIcon> */}
             <Text fz="lg" fw={500}>
                 {feature.title}
             </Text>
@@ -88,7 +80,7 @@ export default function Features() {
     ));
 
     return (
-        <div className={classes.wrapper}>
+        <Paper className={classes.wrapper}>
             <Grid gutter={80}>
 
                 <Grid.Col span={{ base: 12, md: 5 }}>
@@ -96,7 +88,7 @@ export default function Features() {
                         Supercharge Your Website
                     </Title>
                     <Text c="dimmed">
-                        Optimize, Convert, Excel: Elevate Your Content with {appName} - Delivering Peak Performance and Enhanced User Engagement!
+                        Optimize, Compress: Elevate Your Content with {appName} - Delivering Peak Performance and Enhanced User Engagement!
                     </Text>
 
                     <Button
@@ -119,6 +111,6 @@ export default function Features() {
                 </Grid.Col>
 
             </Grid>
-        </div>
+        </Paper>
     );
 }

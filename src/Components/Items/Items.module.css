@@ -1,0 +1,15 @@
+.custom_paper:hover {
+    background-color: var(--mantine-color-gray-0);
+}
+
+.value {
+    font-size: rem(20px);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.diff {
+    line-height: 1;
+    display: flex;
+    align-items: center;
+}
