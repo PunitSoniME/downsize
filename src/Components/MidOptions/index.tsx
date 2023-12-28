@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { Button, Grid } from '@mantine/core';
 import useCompress from './../../hooks/useCompress';
-import { ConfigurationContext } from './../../Context/ConfigurationContext';
+// import { ConfigurationContext } from './../../Context/ConfigurationContext';
 import { ImagesContext } from './../../Context/ImagesContext';
 import FileSaver from 'file-saver';
 import JSZip from 'jszip';
@@ -9,7 +9,7 @@ import JSZip from 'jszip';
 export default function MidOptions() {
 
     const { compressAll } = useCompress();
-    const configContext = useContext(ConfigurationContext);
+    // const configContext = useContext(ConfigurationContext);
     const imagesContext = useContext(ImagesContext);
 
     return (
