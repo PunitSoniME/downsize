@@ -27,8 +27,8 @@ export default function Item({ index, image }) {
             <Grid grow>
 
                 <Grid.Col span={{
-                    base: 12,
-                    md: 2
+                    base: 3,
+                    xs: 2
                 }}>
                     <Image
                         radius="sm"
@@ -40,8 +40,8 @@ export default function Item({ index, image }) {
 
                 <Grid.Col
                     span={{
-                        base: 12,
-                        md: 8
+                        base: 7,
+                        xs: 8
                     }}>
 
                     <div
@@ -123,8 +123,8 @@ export default function Item({ index, image }) {
 
                 <Grid.Col
                     span={{
-                        base: 12,
-                        md: 2
+                        base: 2,
+                        xs: 2
                     }}
                     style={{
                         display: 'flex',
